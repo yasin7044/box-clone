@@ -23,16 +23,32 @@ export default {
   data() {
     return {
       box: [],
+      windowWidth: window.innerWidth,
+      gettingNoOfDiv: 0,
     };
+  },
+  watch: {
+    windowWidth: {
+      immediate: true,
+      handler() {
+        this.gettingNoOfDiv = Math.floor(this.windowWidth / 168);
+      },
+    },
   },
   destroyed() {
     window.removeEventListener("scroll", this.handleScroll);
   },
   created() {
     window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("resize", this.onResize);
+
     this.generateBox();
   },
+
   methods: {
+    onResize() {
+      this.windowWidth = window.innerWidth;
+    },
     generateBox() {
       for (let i = 0; i < 50; i++) {
         this.box.push(this.getRandomColor());
@@ -47,9 +63,20 @@ export default {
       const color = Math.floor(Math.random() * 16777215).toString(16);
       return "#" + color;
     },
-    changeCurrentBoxColour(index, $event) {
-      console.log($event);
+    changeCurrentBoxColour(index) {
       this.$set(this.box, index, this.getRandomColor());
+      this.changingNearestBox(index);
+    },
+    changingNearestBox(index) {
+      if (this.gettingNoOfDiv <= 1) {
+        console.log("No Neighbour Found");
+      } else if (this.gettingNoOfDiv - (index % this.gettingNoOfDiv) > 1) {
+        console.log("Right");
+        this.$set(this.box, index + 1, this.getRandomColor());
+      } else {
+        console.log("Left");
+        this.$set(this.box, index - 1, this.getRandomColor());
+      }
     },
   },
 };
