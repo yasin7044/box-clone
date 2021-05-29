@@ -21,5 +21,6 @@ export default {
   width: 164px;
   height: 164px;
   border: 2px solid black;
+  transition: background 3s ease;
 }
 </style>
