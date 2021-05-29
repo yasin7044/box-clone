@@ -65,9 +65,9 @@ export default {
     },
     changeCurrentBoxColour(index) {
       this.$set(this.box, index, this.getRandomColor());
-      this.changingNearestBox(index);
+      this.findingNearestNeighbour(index);
     },
-    changingNearestBox(index) {
+    findingNearestNeighbour(index) {
       if (this.gettingNoOfDiv <= 1) {
         console.log("No Neighbour Found");
       } else if (this.gettingNoOfDiv - (index % this.gettingNoOfDiv) > 1) {
